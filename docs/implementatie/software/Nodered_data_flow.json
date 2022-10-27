@@ -1,0 +1,829 @@
+[
+    {
+        "id": "facf81da4f5ae049",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b90a0db2e140b258",
+        "type": "http in",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "url": "api/v1/tiles/upload",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 230,
+        "y": 1240,
+        "wires": [
+            [
+                "ab10a3468d6958c3",
+                "0ffbcd7312c77be6"
+            ]
+        ]
+    },
+    {
+        "id": "0ffbcd7312c77be6",
+        "type": "http response",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 420,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "1052941d.efad6c",
+        "type": "http in",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "url": "/api/v1/car",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 1340,
+        "wires": [
+            [
+                "b828f6a6.47d708",
+                "ba0286b9f6db6e99"
+            ]
+        ]
+    },
+    {
+        "id": "b828f6a6.47d708",
+        "type": "http response",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 180,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "de300609211d5ff9",
+        "type": "mysql",
+        "z": "facf81da4f5ae049",
+        "mydb": "b2c88ee7faf55284",
+        "name": "",
+        "x": 890,
+        "y": 1720,
+        "wires": [
+            [
+                "f5c456eb375e93ec",
+                "bbfdf195c93731a0"
+            ]
+        ]
+    },
+    {
+        "id": "a1c209d7ec265501",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "sql commands",
+        "func": "var sketchTargetTegel = global.get(\"sketchTargetTegel\");\nvar sketchTargetCar = global.get(\"sketchTargetCar\");\nvar usedTargetTegel = global.get(\"usedTegel\");\nvar usedTargetCar = global.get(\"usedCar\");\nconst regex = new RegExp(\"^Tegel.\");\n\n\nmsg.bin=regex.test(sketchTargetCar);\n\n if (regex.test(sketchTargetTegel)&&usedTargetTegel){\n    global.set(\"usedTegel\",false);\n   msg.topic=\"SELECT data FROM sketch WHERE (target LIKE 'Tegel_' AND version =(SELECT MAX(version) FROM sketch)); \";\n\n     \n } \n if (!(regex.test(sketchTargetCar))&&usedTargetCar) {\n    global.set(\"usedCar\",false);\n  msg.topic=\"SELECT data FROM sketch WHERE (target NOT LIKE 'Tegel_' AND version =(SELECT MAX(version) FROM sketch));\";\n  \n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 1720,
+        "wires": [
+            [
+                "de300609211d5ff9",
+                "768d4c35062b9cc3"
+            ]
+        ]
+    },
+    {
+        "id": "8be6e0123cc0e209",
+        "type": "http in",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "url": "get/sketchData",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 410,
+        "y": 1720,
+        "wires": [
+            [
+                "51d667876ef4d7eb",
+                "a1c209d7ec265501"
+            ]
+        ]
+    },
+    {
+        "id": "c9033fe4813b481a",
+        "type": "http response",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json",
+            "payload": "msg.payload"
+        },
+        "x": 1280,
+        "y": 1720,
+        "wires": []
+    },
+    {
+        "id": "f5c456eb375e93ec",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "func": "msg.payload = msg.payload[0].data\nmsg.topic = \"\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 1720,
+        "wires": [
+            [
+                "c9033fe4813b481a",
+                "fb55caca9daedee9"
+            ]
+        ]
+    },
+    {
+        "id": "5951341c623e7f7c",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 1960,
+        "wires": []
+    },
+    {
+        "id": "252751dfba215033",
+        "type": "mqtt in",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "topic": "sensorData/sensor1",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "62cfde0fab85e912",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 250,
+        "y": 1960,
+        "wires": [
+            [
+                "7738ee73295a29d8"
+            ]
+        ]
+    },
+    {
+        "id": "5c5369954c61c460",
+        "type": "mqtt in",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "topic": "sensorData/sensor3",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "62cfde0fab85e912",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 250,
+        "y": 2120,
+        "wires": [
+            [
+                "c6dc74e4ee4e2983"
+            ]
+        ]
+    },
+    {
+        "id": "6190c8853fa6e1f9",
+        "type": "mqtt in",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "topic": "version",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "62cfde0fab85e912",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "x": 210,
+        "y": 2040,
+        "wires": [
+            [
+                "77317476c13c6c2d"
+            ]
+        ]
+    },
+    {
+        "id": "510e5f6e9e26708a",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 2040,
+        "wires": []
+    },
+    {
+        "id": "65187945fe616d07",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 2120,
+        "wires": []
+    },
+    {
+        "id": "b3bc45dcaa602270",
+        "type": "mqtt out",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "topic": "payload",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "62cfde0fab85e912",
+        "x": 1700,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "fe144652079faebf",
+        "type": "mysql",
+        "z": "facf81da4f5ae049",
+        "mydb": "b2c88ee7faf55284",
+        "name": "",
+        "x": 1310,
+        "y": 1400,
+        "wires": [
+            [
+                "864cfbde603bec43"
+            ]
+        ]
+    },
+    {
+        "id": "b148418bbdf79dde",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "sql commands",
+        "func": "\nvar sketchTarget = global.get(\"sketchTarget\");\nconst regex = new RegExp(\"^Tegel.\");\n\n if (regex.test(sketchTarget)){\n  msg.topic=\"SELECT MAX(version) FROM sketch WHERE target LIKE 'Tegel_'  \";\n}\nelse if (regex.test(sketchTarget)==false){\n  msg.topic=\"SELECT MAX(version) FROM sketch WHERE target NOT LIKE 'Tegel_' \";\n}\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 1400,
+        "wires": [
+            [
+                "fe144652079faebf"
+            ]
+        ]
+    },
+    {
+        "id": "864cfbde603bec43",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "publish version",
+        "func": "msg.payload = msg.payload[0][\"MAX(version)\"];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1520,
+        "y": 1400,
+        "wires": [
+            [
+                "b3bc45dcaa602270"
+            ]
+        ]
+    },
+    {
+        "id": "7738ee73295a29d8",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "func": "\nvar payload = msg.payload;\nconst sensor1 =Object.values(payload);\nvar sensordata = parseInt(sensor1);\nmsg.topic=\"INSERT INTO sensorData (`sensor1`) VALUES ('\" + sensordata + \"');\"\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 1960,
+        "wires": [
+            [
+                "b61a7ff98acd9621"
+            ]
+        ]
+    },
+    {
+        "id": "b61a7ff98acd9621",
+        "type": "mysql",
+        "z": "facf81da4f5ae049",
+        "mydb": "b251d828b75f19e8",
+        "name": "",
+        "x": 630,
+        "y": 1960,
+        "wires": [
+            [
+                "5951341c623e7f7c"
+            ]
+        ]
+    },
+    {
+        "id": "77317476c13c6c2d",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "func": "\nvar payload = msg.payload;\nconst sensor2 =Object.values(payload);\nvar sensordata = parseInt(sensor2);\nmsg.topic=\"INSERT INTO sensorData (`sensor2`) VALUES ('\" + sensordata + \"');\"\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 2040,
+        "wires": [
+            [
+                "27e1f1875b52fb98"
+            ]
+        ]
+    },
+    {
+        "id": "27e1f1875b52fb98",
+        "type": "mysql",
+        "z": "facf81da4f5ae049",
+        "mydb": "b251d828b75f19e8",
+        "name": "",
+        "x": 630,
+        "y": 2040,
+        "wires": [
+            [
+                "510e5f6e9e26708a"
+            ]
+        ]
+    },
+    {
+        "id": "c6dc74e4ee4e2983",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "func": "\nvar payload = msg.payload;\nconst sensor3=Object.values(payload);\nvar sensordata = parseInt(sensor3);\nmsg.topic=\"INSERT INTO sensorData (`sensor3`) VALUES ('\" + sensordata + \"');\"\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 2120,
+        "wires": [
+            [
+                "46e9d739fa13e272"
+            ]
+        ]
+    },
+    {
+        "id": "46e9d739fa13e272",
+        "type": "mysql",
+        "z": "facf81da4f5ae049",
+        "mydb": "b251d828b75f19e8",
+        "name": "",
+        "x": 630,
+        "y": 2120,
+        "wires": [
+            [
+                "65187945fe616d07"
+            ]
+        ]
+    },
+    {
+        "id": "ecd8ee1f26031028",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "d",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1250,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "ab10a3468d6958c3",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "Process Raw Data",
+        "func": "let payloadHeader = \"\";\nfor(let i = 0; i < msg.payload.length; i++){\n    payloadHeader += String.fromCharCode(msg.payload[i]);\n}\n\nlet headerEndIndex = payloadHeader.search(\"Content-Type: application/octet-stream\");\npayloadHeader = payloadHeader.substring(0, headerEndIndex);\n\n//RegEx to find header-text\nlet reg = /------WebKitFormBoundary[a-zA-Z0-9]*\\D\\nContent-Disposition: form-data; /gm\n\n//Split by previous header-text\nlet rawData = payloadHeader.split(reg);\n\n//Leave index elements from 1 to 4\nrawData = rawData.splice(1, 4);\n//msg.dataRaw = rawData;\n\n//sketchBinaryLength is the first element in the array \"rawData\"\n//After splitting this element in 2 array elements, we select the second element (with index '1')\n//And remove the whitespaces with \"trim()\"\nmsg.sketchBinaryLength = rawData[0].split(\"name=\\\"sketchBinaryLength\\\"\")[1].trim();\n\n//The same procedure is applied to the \"sketchVersion\" and \"sketchTarget\"\nmsg.sketchVersion = rawData[1].split(\"name=\\\"sketchVersion\\\"\")[1].trim();\nmsg.sketchTarget = rawData[2].split(\"name=\\\"sketchTarget\\\"\")[1].trim();\n\n//The \"sketchName\" has an extra double quote at the end (\") so we need to remove this\n//By selecting all the characters from character with index '0'\n//Until the last character minus 1\nlet temp_sketchName = rawData[3].split(\"name=\\\"sketchBinFile\\\"; filename=\\\"\")[1];\nmsg.sketchName = temp_sketchName.substring(0, temp_sketchName.length - 1 );\n\n//The binary data for our file is offset by 46 characters.\n//This because there is a part of the header at the end of the file:\n// \"------WebKitFormBoundary************Peel--\\n\\n\"\n//In order to remove this, we start our new Buffer from the calculated offset minus 46 characters\n//And the end of the new Buffer is the total length of the payload minus 46 characters\nlet binFileOffset = msg.payload.length - parseInt(msg.sketchBinaryLength);\nmsg.sketchBinFile = msg.payload.slice(binFileOffset-172, msg.payload.length - 172);\nmsg.bin =binFileOffset;\nmsg.pay=msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 1220,
+        "wires": [
+            [
+                "c420f2b859fcf250",
+                "8a6ad4ecbf33bc56"
+            ]
+        ]
+    },
+    {
+        "id": "c420f2b859fcf250",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "SQL commands",
+        "func": "global.set(\"sketchTargetTegel\",msg.sketchTarget);\nglobal.set(\"usedTegel\",true);\nmsg.payload=['', msg.sketchName, msg.sketchVersion, msg.sketchBinFile, msg.sketchTarget, ''];\nmsg.topic =\"INSERT INTO sketch(`label`,`filename`, `version`, `data`, `target`, `description`)\" +\n            \"VALUES (?,?,?,?,?,?)\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 1240,
+        "wires": [
+            [
+                "3c1c8d8579a53fde"
+            ]
+        ]
+    },
+    {
+        "id": "3c1c8d8579a53fde",
+        "type": "mysql",
+        "z": "facf81da4f5ae049",
+        "mydb": "b2c88ee7faf55284",
+        "name": "tileupload",
+        "x": 980,
+        "y": 1240,
+        "wires": [
+            [
+                "ecd8ee1f26031028"
+            ]
+        ]
+    },
+    {
+        "id": "ba0286b9f6db6e99",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "Process Raw Data",
+        "func": "let payloadHeader = \"\";\n\nfor(let i = 0; i < msg.payload.length; i++){\n    payloadHeader += String.fromCharCode(msg.payload[i]);\n}\n\nlet headerEndIndex = payloadHeader.search(\"Content-Type: application/octet-stream\");\npayloadHeader = payloadHeader.substring(0, headerEndIndex);\n\n//RegEx to find header-text\nlet reg = /------WebKitFormBoundary[a-zA-Z0-9]*\\D\\nContent-Disposition: form-data; /gm\n\n//Split by previous header-text\nlet rawData = payloadHeader.split(reg);\n\n//Leave index elements from 1 to 4\nrawData = rawData.splice(1, 4);\n//msg.dataRaw = rawData;\n\n//sketchBinaryLength is the first element in the array \"rawData\"\n//After splitting this element in 2 array elements, we select the second element (with index '1')\n//And remove the whitespaces with \"trim()\"\nmsg.sketchBinaryLength = rawData[0].split(\"name=\\\"sketchBinaryLength\\\"\")[1].trim();\n\n//The same procedure is applied to the \"sketchVersion\" and \"sketchTarget\"\nmsg.sketchVersion = rawData[1].split(\"name=\\\"sketchVersion\\\"\")[1].trim();\nmsg.sketchTarget = rawData[2].split(\"name=\\\"sketchTarget\\\"\")[1].trim();\n\n//The \"sketchName\" has an extra double quote at the end (\") so we need to remove this\n//By selecting all the characters from character with index '0'\n//Until the last character minus 1\nlet temp_sketchName = rawData[3].split(\"name=\\\"sketchBinFile\\\"; filename=\\\"\")[1].trim();\nmsg.sketchName = temp_sketchName.substring(0, temp_sketchName.length - 1 );\n\n//The binary data for our file is offset by 46 characters.\n//This because there is a part of the header at the end of the file:\n// \"------WebKitFormBoundary************Peel--\\n\\n\"\n//In order to remove this, we start our new Buffer from the calculated offset minus 46 characters\n//And the end of the new Buffer is the total length of the payload minus 46 characters\nlet binFileOffset = msg.payload.length - parseInt(msg.sketchBinaryLength);\nmsg.sketchBinFile = msg.payload.slice(binFileOffset -46, msg.payload.length - 46);\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 1340,
+        "wires": [
+            [
+                "b9789846e137ede1",
+                "f8dfacb87b0aa78c"
+            ]
+        ]
+    },
+    {
+        "id": "b9789846e137ede1",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "SQL commands",
+        "func": "global.set(\"sketchTargetCar\",msg.sketchTarget);\nglobal.set(\"counter\",msg.sketchVersion);\nglobal.set(\"usedCar\",true);\n\nmsg.payload=['', msg.sketchName, msg.sketchVersion, msg.sketchBinFile, msg.sketchTarget, ''];\nmsg.topic = \"INSERT INTO sketch(`label`,`filename`, `version`, `data`, `target`, `description`)\" +\n            \"VALUES(?,?,?,?,?,?);\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 1340,
+        "wires": [
+            [
+                "41bc3ca0ef8a3208"
+            ]
+        ]
+    },
+    {
+        "id": "41bc3ca0ef8a3208",
+        "type": "mysql",
+        "z": "facf81da4f5ae049",
+        "mydb": "b2c88ee7faf55284",
+        "name": "carupload",
+        "x": 920,
+        "y": 1340,
+        "wires": [
+            [
+                "0dd6efb061b7b690"
+            ]
+        ]
+    },
+    {
+        "id": "8001de67f80ef2fc",
+        "type": "complete",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "scope": [
+            "3c1c8d8579a53fde",
+            "41bc3ca0ef8a3208"
+        ],
+        "uncaught": false,
+        "x": 930,
+        "y": 1400,
+        "wires": [
+            [
+                "b148418bbdf79dde"
+            ]
+        ]
+    },
+    {
+        "id": "852394ad6d495d1e",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "get data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 2360,
+        "wires": []
+    },
+    {
+        "id": "0dd6efb061b7b690",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "768d4c35062b9cc3",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "mqtt",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "8636c58002a0edbe",
+        "type": "function",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "func": "var counter = global.get(\"counter\");\nif(counter%2==0){\n    msg.payload = \"current\";\n     return [ msg, null ];\n}\nelse {\n    msg.payload = \"base\";\n     return [ null,msg ];\n}\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 220,
+        "y": 2240,
+        "wires": [
+            [
+                "852394ad6d495d1e",
+                "a70715ee269bc9d5"
+            ],
+            [
+                "b0b67e6cd184ee07",
+                "bf658df5fe79f8c7"
+            ]
+        ]
+    },
+    {
+        "id": "a70715ee269bc9d5",
+        "type": "http response",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json",
+            "payload": "msg.payload"
+        },
+        "x": 660,
+        "y": 2420,
+        "wires": []
+    },
+    {
+        "id": "b0b67e6cd184ee07",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "get",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 2540,
+        "wires": []
+    },
+    {
+        "id": "bf658df5fe79f8c7",
+        "type": "http response",
+        "z": "facf81da4f5ae049",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "application/json",
+            "payload": "msg.payload"
+        },
+        "x": 660,
+        "y": 2480,
+        "wires": []
+    },
+    {
+        "id": "f8dfacb87b0aa78c",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "carData",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "8a6ad4ecbf33bc56",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "tileData",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "bbfdf195c93731a0",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "getSQLc",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 1820,
+        "wires": []
+    },
+    {
+        "id": "fb55caca9daedee9",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "returnData",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 1820,
+        "wires": []
+    },
+    {
+        "id": "51d667876ef4d7eb",
+        "type": "debug",
+        "z": "facf81da4f5ae049",
+        "name": "Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "b2c88ee7faf55284",
+        "type": "MySQLdatabase",
+        "name": "IoT-SCT Database",
+        "host": "mysql",
+        "port": "3306",
+        "db": "iot-sct",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "62cfde0fab85e912",
+        "type": "mqtt-broker",
+        "name": "SCT-MQTT-Broker",
+        "broker": "mqtt",
+        "port": "1883",
+        "clientid": "test",
+        "usetls": false,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": false,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b251d828b75f19e8",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "mysql",
+        "port": "3306",
+        "db": "testdb",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]
