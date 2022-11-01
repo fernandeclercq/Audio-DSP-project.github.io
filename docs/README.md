@@ -2,4 +2,4 @@
 Digital Signal Processing on audio with Artix-7 FPGA
 
 
-https://fernandeclercq.github.io/Audio-DSP-project.github.io/
+https://github.com/fernandeclercq/Audio-DSP-project.github.io
