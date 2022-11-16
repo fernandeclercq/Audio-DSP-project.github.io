@@ -1,1 +1,4 @@
 *.code-workspace
+
+code/DSD_audio/*.cache/
+code/DSD_audio/DSD_audio.cache/
