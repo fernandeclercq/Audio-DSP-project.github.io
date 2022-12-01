@@ -1,0 +1,1 @@
+--relax --debug typical --mt auto -L xpm -L unisims_ver -L unimacro_ver -L secureip --snapshot axi_traffic_gen_0 xil_defaultlib.axi_traffic_gen_0 xil_defaultlib.glbl -log elaborate.log
