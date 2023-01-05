@@ -1,0 +1,2 @@
+- [Hardware](/paginas/implementatie/hardware.md)
+- [Software](/paginas/implementatie/software.md)

@@ -1,0 +1,6 @@
+- [Probleemstelling](/paginas/analyse/probleemstelling.md)
+- [Deelproblemen](/paginas/analyse/deelproblemen.md)
+- [Abstracte oplossing](/paginas/analyse/abstracte-oplossing.md)
+- [Mindmap](/paginas/analyse/mindmap.md)
+- [Software Analyse](/paginas/analyse/software-analyse.md)
+- [Hardware Analyse](/paginas/analyse/hardware-analyse.md)
