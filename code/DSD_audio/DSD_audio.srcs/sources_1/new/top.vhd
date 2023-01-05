@@ -2,7 +2,11 @@
 -- Company: 
 -- Engineer: 
 -- 
+<<<<<<< HEAD
 -- Create Date: 01.12.2022 13:59:17
+=======
+-- Create Date: 17.11.2022 20:38:48
+>>>>>>> 828194c (delete previous projects)
 -- Design Name: 
 -- Module Name: top - Behavioral
 -- Project Name: 
@@ -31,8 +35,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
+<<<<<<< HEAD
 -- m_axis_aud_clk = 48kHz * 128 = 6.144MHz
 
+=======
+>>>>>>> 828194c (delete previous projects)
 entity top is
 --  Port ( );
 end top;
