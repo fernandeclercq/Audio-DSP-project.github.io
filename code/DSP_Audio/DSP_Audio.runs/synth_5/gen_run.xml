@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="synth_5" LaunchPart="xc7a35tcpg236-1" LaunchTime="1693171826">
+  <File Type="PA-TCL" Name="main.tcl"/>
+  <File Type="REPORTS-TCL" Name="main_reports.tcl"/>
+  <File Type="RDS-RDS" Name="main.vds"/>
+  <File Type="RDS-UTIL" Name="main_utilization_synth.rpt"/>
+  <File Type="RDS-UTIL-PB" Name="main_utilization_synth.pb"/>
+  <File Type="RDS-DCP" Name="main.dcp"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/imports/FPGA-Audio-IIR-master/audiosystem.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/01/FPGA-Audio-IIR-master/audiosystem.vhd"/>
+        <Attr Name="ImportTime" Val="1591536023"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/echo_module.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/02/02_audio/02_audio.srcs/sources_1/new/echo_module.vhd"/>
+        <Attr Name="ImportTime" Val="1693171810"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/FPGA-Audio-IIR-master/i2s_rxtx.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/01/FPGA-Audio-IIR-master/i2s_rxtx.vhd"/>
+        <Attr Name="ImportTime" Val="1591536023"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/FPGA-Audio-IIR-master/iir.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/01/FPGA-Audio-IIR-master/iir.vhd"/>
+        <Attr Name="ImportTime" Val="1591536023"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mux_data.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/02/02_audio/02_audio.srcs/sources_1/new/mux_data.vhd"/>
+        <Attr Name="ImportTime" Val="1692866740"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/mux_i2s_data.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/02/02_audio/02_audio.srcs/sources_1/new/mux_i2s_data.vhd"/>
+        <Attr Name="ImportTime" Val="1692868968"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/FPGA-Audio-IIR-master/top.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/01/FPGA-Audio-IIR-master/top.vhd"/>
+        <Attr Name="ImportTime" Val="1591536023"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/demux_iir_weight.vhd">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/02/02_audio/02_audio.srcs/sources_1/new/demux_iir_weight.vhd"/>
+        <Attr Name="ImportTime" Val="1692866629"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="main"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PSRCDIR/constrs_1/imports/Basys3 info/Basys3_Master.xdc">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../../../Users/Fernando/Documents/DSD/Labos_2022/Basys3 info/Basys3_Master.xdc"/>
+        <Attr Name="ImportTime" Val="1665063610"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
+    <Step Id="synth_design"/>
+  </Strategy>
+  <BlockFileSet Type="BlockSrcs" Name="clk_pll"/>
+</GenRun>
